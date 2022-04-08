@@ -1,11 +1,8 @@
 import React from 'react';
 import './index.css';
-
-
 import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
 import App from "./App";
-//import App from "./AppSwrOnly1"
 
 const container = document.getElementById('root');
 const root = createRoot(container);
