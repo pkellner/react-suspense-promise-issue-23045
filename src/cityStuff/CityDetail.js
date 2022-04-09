@@ -1,32 +1,26 @@
+import { Suspense } from "react";
 import useSwr from "swr";
 import { restBase } from "../constants";
-import { Suspense } from "react";
 import { fetcher } from "../fetcher";
 
-export default function CityDetail({ selectedCityId, cities, isPending }) {
+export default function CityDetail({ selectedCityId, isPending, cities }) {
   const selectedCityIdLocal = selectedCityId
     ? selectedCityId
     : cities && !selectedCityId
     ? cities[0].id
     : undefined;
 
-  const { data: city } = useSwr(
-    `${restBase}/api/city/${selectedCityIdLocal}`,
-    fetcher,
-    { suspense: true }
-  );
+  const url = `${restBase}/api/city/${selectedCityIdLocal}`;
 
-  return (
-    <div className="row">
-      <div className="col-9">
-        {isPending ? (
-          <div>Loading because of isPending set</div>
-        ) : (
-          <Suspense fallback={<div>City DETAIL</div>}>
-            <div>{JSON.stringify(city ?? "{id: 99999}")}</div>
-          </Suspense>
-        )}
-      </div>
+  const { data: city } = useSwr(url, fetcher, { suspense: true });
+
+  return isPending ? (
+    <div className="col-9">City Detail Loading...</div>
+  ) : (
+    <div className="col-9">
+      <Suspense fallback={<div>City DETAIL</div>}>
+        <div>{JSON.stringify(city)}</div>
+      </Suspense>
     </div>
   );
 }
